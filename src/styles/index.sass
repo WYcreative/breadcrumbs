@@ -1,0 +1,92 @@
+$row-gap: 4px !default
+$column-gap: 8px !default
+$wrap: false !default
+$fade-length: 4.5em !default
+$separator-color: rgba(#000, .5) !default
+$separator-width: 8px !default
+$separator-height: $separator-width !default
+$item-color: inherit !default
+$item-font-size: .75em !default
+$item-current-color: rgba(#000, .5) !default
+
+
+
+/// Outputs the breadcrumbs custom properties at root level.
+=custom-properties
+	@at-root :root
+		--breadcrumbs-row-gap: #{$row-gap}
+		--breadcrumbs-column-gap: #{$column-gap}
+		--breadcrumbs-fade-length: #{$fade-length}
+		--breadcrumbs-separator-color: #{$separator-color}
+		--breadcrumbs-separator-width: #{$separator-width}
+		--breadcrumbs-separator-height: #{$separator-height}
+		--breadcrumbs-item-color: #{$item-color}
+		--breadcrumbs-item-font-size: #{$item-font-size}
+		--breadcrumbs-item-current-color: #{$item-current-color}
+
+
+
+/// Output the breadcrumbs styles.
+
+=breadcrumbs
+
+	.breadcrumbs
+		$block: &
+
+
+		// List
+		// -----------------------------------------------------------------------------
+		&__list
+			margin-block: 0
+			padding: 0
+			display: flex
+			gap: var(--breadcrumbs-row-gap) var(--breadcrumbs-column-gap)
+			list-style: none
+
+			@if $wrap
+				flex-wrap: wrap
+			@else
+				max-width: 100vw
+				overflow: auto
+				mask: linear-gradient(to right, #000 calc(100% - var(--breadcrumbs-fade-length)), rgba(#000, 0))
+				scrollbar-width: none
+
+				&::-webkit-scrollbar
+					display: none
+
+
+		// Item
+		// -----------------------------------------------------------------------------
+		&__item
+			margin-block: 0
+			display: flex
+			gap: var(--breadcrumbs-column-gap)
+			align-items: center
+
+			@if $wrap
+				min-width: 0
+
+
+		// Separator
+		// -----------------------------------------------------------------------------
+		&__separator
+			color: var(--breadcrumbs-separator-color)
+			width: var(--breadcrumbs-separator-width)
+			height: var(--breadcrumbs-separator-height)
+			flex-shrink: 0
+
+
+		// Text
+		// -----------------------------------------------------------------------------
+		&__text
+			color: var(--breadcrumbs-item-color)
+			white-space: nowrap
+			text-decoration: none
+			font-size: var(--breadcrumbs-item-font-size)
+
+			@if $wrap
+				text-overflow: ellipsis
+				overflow: hidden
+
+			#{$block}__item--current &
+				color: var(--breadcrumbs-item-current-color)

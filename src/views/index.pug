@@ -1,0 +1,62 @@
+include ~@wycreative/symbol
+
+
+
+-
+	const __breadcrumbs_defaults = {
+		separator: {
+			id: 'chevron-right',
+		}
+	}
+
+
+
+//- @pugdoc
+	Creates breadcrumbs.
+
+	@param {Object} options - The breadcrumbs options.
+	@param {Object[]} options.items - The list of breadcrumbs items.
+	@param {String} item.text - The item text.
+	@param {String} [item.url] - The item URL.
+		If not defined, a `span` will be used instead or an `a` element.
+	@param {Object} [options.separator] - The breadcrumbs separator options.
+	@param {String} [options.separator.file] - The SVG file that contains the separator symbol.
+	@param {String} [options.separator.id = 'chevron-right'] - The separator symbol ID.
+	@param {Number} [options.separator.width] - The separator symbol width.
+	@param {Number} [options.separator.height = options.separator.height] - The separator symbol height.
+
+	@attributes * - The attributes for the `.breadcrumbs` element.
+
+	@returns {HTMLElement} The breadcrumbs instance.
+
+mixin breadcrumbs(options)
+	//- Assign defaults.
+	//- ----------------------------------------------------------------------------
+	- options.separator = Object.assign({}, __breadcrumbs_defaults.separator, options.separator)
+
+
+	//- Validate arguments.
+	//- ----------------------------------------------------------------------------
+	each item in options.items
+		if typeof item !== 'object' || item === null
+			- throw new TypeError(`[Breadcrumbs Mixin]\n  The argument 'breadcrumb' only accepts objects. Got the ${typeof item} \`${item}\`.`)
+
+		if typeof item.text !== 'string'
+			- throw new TypeError(`[Breadcrumbs Mixin]\n  The property 'breadcrumb.text' only accepts strings. Got the ${typeof item.text} \`${item.text}\`.`)
+
+		if item.url && typeof item.url !== 'string'
+			- throw new TypeError(`[Breadcrumbs Mixin]\n  The property 'breadcrumb.url' only accepts strings. Got the ${typeof item.url} \`${item.url}\`.`)
+
+
+	//- Output result.
+	//- ----------------------------------------------------------------------------
+	nav.breadcrumbs&attributes(attributes)
+		ul.breadcrumbs__list
+			each item, index in options.items
+				li.breadcrumbs__item(class=(index === options.items.length - 1 ? 'breadcrumbs__item--current' : null))
+					if index > 0
+						+symbol(options.separator).breadcrumbs__separator
+
+					#{item.url ? 'a' : 'span'}.breadcrumbs__text(
+						href=item.url
+					)= item.text

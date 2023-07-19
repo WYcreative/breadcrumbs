@@ -3,4 +3,29 @@ extends _layouts/base
 
 
 block body
-	h1 Welcome to the Breadcrumbs example!
+	- __breadcrumbs_defaults.separator.file = '/examples/assets/images/symbols'
+	- __breadcrumbs_defaults.separator.width = 12
+
+	+breadcrumbs({
+		items: [
+			{
+				text: 'Level 1',
+				url: '#',
+			},
+			{
+				text: 'Level 2',
+				url: '#',
+			},
+			{
+				text: 'Level 3 (with a very large text)',
+				url: '#',
+			},
+			{
+				text: 'Level 4',
+				url: '#',
+			},
+			{
+				text: 'Level 5',
+			},
+		],
+	})

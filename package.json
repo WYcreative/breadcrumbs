@@ -42,7 +42,9 @@
     "url": "git+https://github.com/wycreative/breadcrumbs"
   },
   "homepage": "https://wycreative.github.io/breadcrumbs",
-  "dependencies": {},
+  "dependencies": {
+    "@wycreative/symbol": "^0.2.0"
+  },
   "devDependencies": {
     "browser-sync": "^2.29.3",
     "cssnano": "^6.0.1",
